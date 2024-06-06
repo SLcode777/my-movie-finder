@@ -42,7 +42,7 @@ function Home() {
 
   return (
     
-    <main className="flex min-h-screen min-w-screen flex-col items-center justify-top p-24 border border-white">
+    <main className="flex min-h-screen min-w-screen flex-col items-center justify-top p-24 bg-black">
       <div className="flex flex-col items-center w-full">
         <h1 className="text-3xl font-bold  text-yellow-400 mb-20">
           Movie Finder
