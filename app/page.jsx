@@ -2,14 +2,14 @@
 
 import { useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import useSWR from "swr";
 import React from "react";
 import { MovieCard } from "./movie-card";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default function Home() {
+function Home() {
   const [search, setSearch] = useQueryState("search");
   const [debouncedSearch] = useDebounce(search, 1000);
   const [urlSearch, setUrlSearch] = useState(null);
@@ -41,6 +41,7 @@ export default function Home() {
   );
 
   return (
+    
     <main className="flex min-h-screen min-w-screen flex-col items-center justify-top p-24 border border-white">
       <div className="flex flex-col items-center w-full">
         <h1 className="text-3xl font-bold  text-yellow-400 mb-20">
@@ -69,14 +70,18 @@ export default function Home() {
         {isLoading ? (
           <span className="loading loading-ring loading-lg"></span>
         ) : null}
+        {data && data.Response === "False" ? (
+          <p className="text-red-500">No results found for {search}</p>
+        ) : null}
         {data && data.Search ? (
           <ul className="grid grid-cols-3 gap-2">
             {data.Search.map((movie) => (
               <li key={movie.imdbID}>
                 <MovieCard
                   title={movie.Title}
-                  poster={movie.Poster}
+                  poster={movie.Poster !== "N/A" ? movie.Poster : "/default-poster.png"}
                   year={movie.Year}
+                  type={movie.Type}
                 />
               </li>
             ))}
@@ -84,5 +89,14 @@ export default function Home() {
         ) : null}
       </div>
     </main>
+    
   );
+}
+
+export default function App() {
+  return (
+    <Suspense fallback={<span className="loading loading-ring loading-lg"></span>}>
+      <Home/>
+    </Suspense>
+  )
 }

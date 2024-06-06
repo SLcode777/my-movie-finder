@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-
 export function MovieCard({ title, year, imdbID, type, poster }) {
   return (
     <>
@@ -13,7 +12,9 @@ export function MovieCard({ title, year, imdbID, type, poster }) {
           className="rounded-t-xl h-[445px]"
         />
         <h1 className="pt-2 px-4 font-bold text-lg truncate">{title}</h1>
-        <p className="text-sm pl-4 pb-4 text-white/65">{year}</p>
+        <p className="text-sm pl-4 pb-4 text-white/65">
+          {year}&nbsp;({type})
+        </p>
       </div>
     </>
   );
